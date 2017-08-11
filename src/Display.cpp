@@ -18,30 +18,14 @@ int main(int argc, const char** argv)
 
  // add your file name
  VideoCapture cap("C:\\Users\\huzhu\\workspace\\MotionInterpolation\\EggJumpy.mp4");
-//Open the output video
- VideoWriter outputVideo;
- const string NAME = "outputVideo.avi";
- int ex = static_cast<int>(cap.get(CV_CAP_PROP_FOURCC));     // Get Codec Type- Int form
-  ex=-1;
-     // Transform from int to char via Bitwise operators
-     char EXT[] = {(char)(ex & 0XFF) , (char)((ex & 0XFF00) >> 8),(char)((ex & 0XFF0000) >> 16),(char)((ex & 0XFF000000) >> 24), 0};
-     cout << "Input codec type: " << EXT << endl;
- int fps=60;
- //Size S = Size((int) cap.get(CV_CAP_PROP_FRAME_WIDTH),    // Acquire input size
-//                  (int) cap.get(CV_CAP_PROP_FRAME_HEIGHT));
- Size S=Size(650,650);
- outputVideo.open(NAME,ex,fps,S,false);
- if (!outputVideo.isOpened())
-    {
-        cout  << "Could not open the output video for write: " <<endl;
-        return -1;
-    }
 
  Mat flow;
-         // some faster than mat image container
+ // some faster than mat image container
  UMat  flowUmat, prevgray;
  Rect Rec(640,210,650,650);//ADJUSTED FOR 6946 ONLY
- int framenumber=1;
+
+ namedWindow("resultDisplay",1);
+
  for (;;)
  {
 
@@ -137,14 +121,13 @@ int main(int argc, const char** argv)
     Mat c_estimation, c_img;
     cvtColor(estimation,c_estimation,CV_GRAY2RGB);
     cvtColor(img,c_img,CV_GRAY2RGB);
-    outputVideo<<c_estimation;
-    outputVideo<<c_img;
 
+    imshow("resultDisplay",c_estimation);
+    if( (char)waitKey(15) ==27) break;
+    imshow("resultDisplay",c_img);
+    if( (char)waitKey(15) ==27) break;
 
-    cout<<"framenumber="<<framenumber<<endl;
-    framenumber=framenumber+1;
-
-                                // fill previous image again
+                                  // fill previous image again
     img.copyTo(prevgray);
 
    }
@@ -155,9 +138,7 @@ int main(int argc, const char** argv)
 
    }
 
-
-    waitKey();
-
   }
  }
+ waitKey();
 }
