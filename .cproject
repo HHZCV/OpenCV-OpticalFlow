@@ -26,6 +26,9 @@
 								<option id="gnu.cpp.compiler.mingw.exe.debug.option.debugging.level.2004654782" name="Debug Level" superClass="gnu.cpp.compiler.mingw.exe.debug.option.debugging.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.342425314" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:\Users\hua\opencv3.1.0\build\MinGW\install\include\&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\huzhu\opencv\build\Mingw_build\install\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\huzhu\opencv\build\Mingw_build\install\include\opencv&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\huzhu\opencv\build\Mingw_build\install\include\opencv2&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Users\hua\opencv3.1.0\build\MinGW\install\include\opencv&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Users\hua\opencv3.1.0\build\MinGW\install\include\opencv2&quot;"/>
 								</option>
@@ -59,6 +62,7 @@
 								</option>
 								<option id="gnu.cpp.link.option.paths.1586087142" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" useByScannerDiscovery="false" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;C:\Users\hua\opencv3.1.0\build\MinGW\install\x86\mingw\lib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\huzhu\opencv\build\Mingw_build\install\x86\mingw\lib&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1880100256" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>

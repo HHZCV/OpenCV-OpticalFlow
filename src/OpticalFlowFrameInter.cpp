@@ -19,14 +19,23 @@ int main(int argc, const char** argv)
  // add your file name
  VideoCapture cap("C:\\Users\\huzhu\\workspace\\MotionInterpolation\\EggJumpy.mp4");
 
+
  Mat flow;
  // some faster than mat image container
  UMat  flowUmat, prevgray;
  Rect Rec(640,210,650,650);//ADJUSTED FOR 6946 ONLY
 
  namedWindow("resultDisplay",1);
-
- for (;;)
+ VideoWriter outputVideo;
+ Size S= Size(650,650);
+ outputVideo.open("outputVideo.avi",CV_FOURCC('M','J','P','G'),50,S,true);
+ if (!outputVideo.isOpened())
+    {
+        cout  << "Could not open the output video for write: "  << endl;
+        return -1;
+    }
+ int count=1;
+ for (int i=0;i<10;i++)
  {
 
   bool Is = cap.grab();
@@ -56,26 +65,27 @@ int main(int argc, const char** argv)
    cvtColor(img, img, COLOR_BGR2GRAY);
 
 
-   // For all optical flow you need a sequence of images.. Or at least 2 of them. Previous                           //and current frame
-   //if there is no current frame
-   // go to this part and fill previous frame
-   //else {
-   // img.copyTo(prevgray);
-   //   }
-   // if previous frame is not empty.. There is a picture of previous frame. Do some                                  //optical flow alg.
+    //optical flow alg.
 
    if (prevgray.empty() == false ) {
 
     // calculate optical flow
-    calcOpticalFlowFarneback(prevgray, img, flowUmat, 0.4, 1, 12, 2, 8, 1.2, 0);
+	double pyr_scale =0.4;
+	int levels =1;
+	int winsize=9;//12
+	int iterations =2;
+	int poly_n=5;//8
+	double poly_sigma=1.1;//1.2;
+	int flags =0;
+    calcOpticalFlowFarneback(prevgray, img, flowUmat,pyr_scale,levels,winsize,iterations,poly_n,poly_sigma,flags);
     //initialize estimation as frame#2
 
-/*
+
     namedWindow("first",WINDOW_AUTOSIZE);
     imshow("first",prevgray);
     namedWindow("second",WINDOW_AUTOSIZE);
     imshow("second",img);
-*/
+
     // copy Umat container to standard Mat
     flowUmat.copyTo(flow);
 
@@ -109,9 +119,10 @@ int main(int argc, const char** argv)
       }
 
      }
-    /*                             // draw the results
-    namedWindow("prew", WINDOW_AUTOSIZE);
-    imshow("prew", original);
+                                // draw the results
+    //namedWindow("prew", WINDOW_AUTOSIZE);
+    //imshow("prew", original);
+    /*
     namedWindow("estimation",WINDOW_AUTOSIZE);
     imshow("estimation",estimation);
     namedWindow("recover1",WINDOW_AUTOSIZE);
@@ -122,10 +133,19 @@ int main(int argc, const char** argv)
     cvtColor(estimation,c_estimation,CV_GRAY2RGB);
     cvtColor(img,c_img,CV_GRAY2RGB);
 
-    imshow("resultDisplay",c_estimation);
-    if( (char)waitKey(15) ==27) break;
-    imshow("resultDisplay",c_img);
-    if( (char)waitKey(15) ==27) break;
+    //write to output video
+    outputVideo<<c_estimation;
+    waitKey(1);
+    cout<<"finishing writing frame #"<<count<<endl;
+    count++;
+    outputVideo<<c_img;
+
+ //   imshow("resultDisplay",c_estimation);
+ //   if( (char)waitKey(15) ==27) break;
+ //   imshow("resultDisplay",c_img);
+ //   if( (char)waitKey(15) ==27) break;
+
+ //  waitKey(0);
 
                                   // fill previous image again
     img.copyTo(prevgray);
@@ -140,5 +160,6 @@ int main(int argc, const char** argv)
 
   }
  }
+ cout<<"Finish writing"<<endl;
  waitKey();
 }
