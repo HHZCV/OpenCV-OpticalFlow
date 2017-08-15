@@ -11,7 +11,13 @@
 using namespace cv;
 using namespace std;
 
-
+std::string ExePath()
+{
+	char buffer[MAX_PATH];
+	GetModuleFileName(NULL,buffer,MAX_PATH);
+	string::size_type pos=string(buffer).find_last_of("\\/");
+	return string(buffer).substr(0,pos);
+}
 
 int main(int argc, const char** argv)
 {
@@ -34,8 +40,10 @@ int main(int argc, const char** argv)
         cout  << "Could not open the output video for write: "  << endl;
         return -1;
     }
- int count=1;
- for (int i=0;i<10;i++)
+
+ std::string DataFolder = ExePath()+ "\\VideoScreenShot\\";
+ CreateDirectory(DataFolder.c_str(),NULL);
+ for (int i=0;i<400;i++)
  {
 
   bool Is = cap.grab();
@@ -132,20 +140,28 @@ int main(int argc, const char** argv)
     Mat c_estimation, c_img;
     cvtColor(estimation,c_estimation,CV_GRAY2RGB);
     cvtColor(img,c_img,CV_GRAY2RGB);
+    std::string imageName1;
+    ostringstream convert1;
+    convert1<<i;
+    imageName1=DataFolder+convert1.str()+ ".bmp";
 
-    //write to output video
-    outputVideo<<c_estimation;
-    waitKey(1);
-    cout<<"finishing writing frame #"<<count<<endl;
-    count++;
-    outputVideo<<c_img;
+    //out put image
+    imwrite(imageName1,c_estimation);
+
+    i++;
+    std::string imageName2;
+    ostringstream convert2;
+    convert2<<i;
+    imageName2=DataFolder+convert2.str()+ ".bmp";
+
+    imwrite(imageName2,c_img);
 
  //   imshow("resultDisplay",c_estimation);
  //   if( (char)waitKey(15) ==27) break;
  //   imshow("resultDisplay",c_img);
  //   if( (char)waitKey(15) ==27) break;
 
- //  waitKey(0);
+
 
                                   // fill previous image again
     img.copyTo(prevgray);
